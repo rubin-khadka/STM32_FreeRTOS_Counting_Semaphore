@@ -31,6 +31,7 @@
 
 #include "stdlib.h"
 #include "string.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -251,7 +252,6 @@ static void MX_GPIO_Init(void)
 void HPT_Task(void *pvParameters)
 {
   char sresource[3];
-
   int semcount = 0;
   char ssemcount[2];
 
@@ -263,12 +263,20 @@ void HPT_Task(void *pvParameters)
   while(1)
   {
     char str[155];
-    sprintf(str, "Entered HPT Task\nTokens available: %d\n\n", uxSemaphoreGetCount(CountingSemaphore));
+    strcpy(str, "Entered HPT Task\n About to ACQUIRE Semaphore\n ");
+    semcount = uxSemaphoreGetCount(CountingSemaphore);
+    itoa(semcount, ssemcount, 10);
+    strcat(str, "Tokens available:");
+    strcat(str, semcount);
+    strcat(str, "\n\n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     xSemaphoreTake(CountingSemaphore, portMAX_DELAY);
 
-    sprintf(str, "Leaving HPT Task\nData Accessed: %d\n\n", resource[indx]);
+    itoa (resource[indx], sresource, 10);
+    strcat(str, "Leaving HPT task\n Data ACCESSED is:");
+    strcat(str, sresource);
+    strcat(str, "\n Not releasing the semaphore \n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     indx++;
@@ -289,12 +297,20 @@ void MPT_Task(void *pvParameters)
   while(1)
   {
     char str[155];
-    sprintf(str, "Entered MPT Task\nTokens available: %d\n\n", uxSemaphoreGetCount(CountingSemaphore));
+    strcpy(str, "Entered MPT Task\n About to ACQUIRE Semaphore\n ");
+    semcount = uxSemaphoreGetCount(CountingSemaphore);
+    itoa(semcount, ssemcount, 10);
+    strcat(str, "Tokens available:");
+    strcat(str, semcount);
+    strcat(str, "\n\n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     xSemaphoreTake(CountingSemaphore, portMAX_DELAY);
 
-    sprintf(str, "Leaving MPT Task\nData Accessed: %d\n\n", resource[indx]);
+    itoa (resource[indx], sresource, 10);
+    strcat(str, "Leaving MPT task\n Data ACCESSED is:");
+    strcat(str, sresource);
+    strcat(str, "\n Not releasing the semaphore \n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     indx++;
@@ -302,7 +318,7 @@ void MPT_Task(void *pvParameters)
     {
       indx = 0;
     }
-    vTaskDelay(2000);
+    vTaskDelay(3000);
     // vTaskDelete(NULL); // This deletes the task
   }
 }
@@ -315,12 +331,20 @@ void LPT_Task(void *pvParameters)
   while(1)
   {
     char str[155];
-    sprintf(str, "Entered LPT Task\nTokens available: %d\n\n", uxSemaphoreGetCount(CountingSemaphore));
+    strcpy(str, "Entered LPT Task\n About to ACQUIRE Semaphore\n ");
+    semcount = uxSemaphoreGetCount(CountingSemaphore);
+    itoa(semcount, ssemcount, 10);
+    strcat(str, "Tokens available:");
+    strcat(str, semcount);
+    strcat(str, "\n\n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     xSemaphoreTake(CountingSemaphore, portMAX_DELAY);
 
-    sprintf(str, "Leaving LPT Task\nData Accessed: %d\n\n", resource[indx]);
+    itoa (resource[indx], sresource, 10);
+    strcat(str, "Leaving LPT task\n Data ACCESSED is:");
+    strcat(str, sresource);
+    strcat(str, "\n Not releasing the semaphore \n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     indx++;
@@ -328,7 +352,7 @@ void LPT_Task(void *pvParameters)
     {
       indx = 0;
     }
-    vTaskDelay(1000);
+    vTaskDelay(3000);
     // vTaskDelete(NULL); // This deletes the task
   }
 }
@@ -341,12 +365,20 @@ void VLPT_Task(void *pvParameters)
   while(1)
   {
     char str[155];
-    sprintf(str, "Entered VLPT Task\nTokens available: %d\n\n", uxSemaphoreGetCount(CountingSemaphore));
+    strcpy(str, "Entered VLPT Task\n About to ACQUIRE Semaphore\n ");
+    semcount = uxSemaphoreGetCount(CountingSemaphore);
+    itoa(semcount, ssemcount, 10);
+    strcat(str, "Tokens available:");
+    strcat(str, semcount);
+    strcat(str, "\n\n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     xSemaphoreTake(CountingSemaphore, portMAX_DELAY);
 
-    sprintf(str, "Leaving VLPT Task\nData Accessed: %d\n\n", resource[indx]);
+    itoa (resource[indx], sresource, 10);
+    strcat(str, "Leaving VLPT task\n Data ACCESSED is:");
+    strcat(str, sresource);
+    strcat(str, "\n Not releasing the semaphore \n");
     HAL_UART_Transmit(&huart1, (uint8_t*) str, strlen(str), HAL_MAX_DELAY);
 
     indx++;
@@ -354,7 +386,7 @@ void VLPT_Task(void *pvParameters)
     {
       indx = 0;
     }
-    vTaskDelay(500);
+    vTaskDelay(3000);
     // vTaskDelete(NULL); // This deletes the task
   }
 }
