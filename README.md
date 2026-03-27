@@ -36,7 +36,11 @@ A counting semaphore with maximum count of 3 is used to manage access to a share
 | LPT_Task | 1 | 1000ms delay after accessing resource |
 | VLPT_Task | 0 (Lowest) | 500ms delay after accessing resource |
 
-## Counting Semaphore Behavior Demonstrated
+## UART Output
+
+https://github.com/user-attachments/assets/a0287168-f4be-496a-bd99-11d74c2c87cb
+
+## Counting Semaphore Behavior
 1. Resource Pool Management
     - Semaphore created with xSemaphoreCreateCounting(3, 0) - max 3 tokens, initially 0
     - HPT Task gives 3 initial tokens at startup
@@ -60,50 +64,7 @@ A counting semaphore with maximum count of 3 is used to manage access to a share
     - Tasks block when no tokens are available
     - All 4 tasks eventually block after consuming the initial 3 tokens
     - System waits for user to send 'r' via UART to replenish tokens
-
-## UART Output
-```
-Counting Semaphore Created successfully
-
-Entered HPT Task
-Tokens available: 3
-
-Leaving HPT Task
-Data Accessed: 111
-
-Entered MPT Task
-Tokens available: 2
-
-Leaving MPT Task
-Data Accessed: 222
-
-Entered LPT Task
-Tokens available: 1
-
-Leaving LPT Task
-Data Accessed: 333
-
-Entered VLPT Task
-Tokens available: 0
-
-[All tasks blocked - waiting for 'r' command]
-
-(After user sends 'r')
-Entered HPT Task
-Tokens available: 3
-
-Leaving HPT Task
-Data Accessed: 111
-
-Entered MPT Task
-Tokens available: 2
-
-Leaving MPT Task
-Data Accessed: 222
-
-... (cycle repeats)
-```
-
+    - 
 ## Semaphore Release Strategy
 
 In this project, semaphore tokens are only released from the UART ISR, not from tasks. This demonstrates an important embedded systems concept:
